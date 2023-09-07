@@ -6,6 +6,7 @@ import com.softwareengineeringchallenge.restAPIchallge2.service.ItemService;
 
 //imported
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +49,11 @@ public class ItemController {
     // Description: Deletes an item with the provided `id`.
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
-        return ResponseEntity.ok(itemService.deleteItem(id));
+        boolean isDeleted = itemService.deleteItem(id);
+        if (isDeleted) {
+            return ResponseEntity.ok("Item deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found");
+        }
     }
-
 }
